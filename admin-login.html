@@ -7,10 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* ---------------------------------------------------- */
-        /* ESTILOS CSS (Se mantienen los estilos minimalistas) */
-        /* ---------------------------------------------------- */
-
+        /* [Se mantiene el bloque <style> completo para el diseño] */
         :root {
             --color-primary: #007bff;
             --color-light-blue: #f0f7ff;
@@ -165,20 +162,23 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 
     <script>
-        // **1. CONFIGURACIÓN DEL CLIENTE DE FIREBASE**
-        // DEBES REEMPLAZAR ESTOS VALORES con la configuración REAL de tu Consola de Firebase
+        // **1. CONFIGURACIÓN FINAL DEL CLIENTE DE FIREBASE**
         const firebaseConfig = {
-            apiKey: "TU_API_KEY_DE_CLIENTE", 
-            authDomain: "TU_PROYECTO.firebaseapp.com", // Ej: invmartinez-1234.firebaseapp.com
-            projectId: "TU-PROJECT-ID", 
-            // Las otras claves (storageBucket, messagingSenderId, appId) no son necesarias para Auth
+            apiKey: "AIzaSyDCZADmfy32b3qqSjGynf6zYs48lkQhXIk",
+            authDomain: "inversiones-martinez.firebaseapp.com",
+            projectId: "inversiones-martinez",
+            storageBucket: "inversiones-martinez.firebasestorage.app",
+            messagingSenderId: "709438657642",
+            appId: "1:709438657642:web:dd247a8917d316a574e613",
+            measurementId: "G-176459ZHQQ"
         };
 
-        // **2. URL DE TU API DE FLASK CORREGIDA**
+        // **2. URL DE TU API DE FLASK**
         const API_VERIFY_URL = 'https://invmartinez.pythonanywhere.com/api/admin/verify-token'; 
         
         // Inicializar Firebase
         if (!firebase.apps.length) {
+            // Usamos firebase.initializeApp() de la versión 8 del SDK
             firebase.initializeApp(firebaseConfig);
         }
         const auth = firebase.auth();
@@ -193,21 +193,20 @@
             errorMessage.textContent = 'Iniciando sesión en Firebase...';
 
             try {
-                // PASO 1: LOGIN DE USUARIO con el SDK Cliente (genera el token)
+                // PASO 1: LOGIN DE USUARIO (el paso que antes fallaba)
                 const userCredential = await auth.signInWithEmailAndPassword(email, password);
                 const user = userCredential.user;
                 
-                // Obtener el ID Token (el "tiquete" de sesión)
+                // Obtener el ID Token
                 const idToken = await user.getIdToken();
 
                 errorMessage.textContent = 'Verificando permisos de administrador con el servidor...';
 
                 // PASO 2: Envío del ID Token al API de Flask para VERIFICACIÓN
-                // El servidor usa la clave Admin SDK para validar este token y el rol en Firestore.
                 const response = await fetch(API_VERIFY_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id_token: idToken }) // Solo enviamos el token!
+                    body: JSON.stringify({ id_token: idToken }) 
                 });
 
                 const data = await response.json();
@@ -216,21 +215,19 @@
                     // Login y verificación exitosos
                     localStorage.setItem('auth_token_admin', idToken);
                     localStorage.setItem('user_data', JSON.stringify(data));
-                    // Redirigir al dashboard
                     window.location.href = '/dashboard-admin.html'; 
                 } else {
-                    // El token es válido, pero el rol es incorrecto o error del servidor
                     errorMessage.textContent = data.message || 'Permiso denegado por el servidor.';
                 }
             } catch (error) {
-                // Manejo de errores específicos de Firebase Auth
+                // Manejo de errores de Firebase Auth
                 let msg = 'Error desconocido al iniciar sesión.';
                 if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
                     msg = 'Credenciales de administrador incorrectas.';
                 } else if (error.code === 'auth/invalid-email') {
                     msg = 'El formato del correo electrónico es incorrecto.';
                 } else if (error.code === 'auth/network-request-failed') {
-                    msg = 'Error de conexión de red. Inténtelo de nuevo.';
+                    msg = 'Error de conexión de red.';
                 }
                 errorMessage.textContent = msg;
                 console.error('Error de autenticación:', error);
