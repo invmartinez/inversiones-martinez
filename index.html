@@ -3,38 +3,306 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inversiones Martinez - Login</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="login.css">
+    <title>Inversiones Martinez - Acceso</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> 
+
+    <style>
+        /* Variables para colores */
+        :root {
+            --color-bg-dark: #121212; /* Fondo muy oscuro */
+            --color-card-dark: #1e1e1e; /* Color de la tarjeta, ligeramente más claro */
+            --color-text-light: #f5f5f5; /* Texto blanco suave */
+            --color-accent: #00ffff; /* Cian/Azul Eléctrico: Acento de vanguardia */
+            --color-border-subtle: #333333; /* Bordes sutiles en oscuro */
+            --color-success: #3DDC84; /* Verde neón para éxito */
+            --color-error: #ff6b6b; /* Rojo neón para error */
+        }
+
+        /* Estilos Globales y Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-bg-dark);
+            color: var(--color-text-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            letter-spacing: 0.5px; /* Ligera separación para un look técnico */
+        }
+
+        /* Textura de Fondo (Opcional, para un toque sutil) */
+        .background-texture {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Un patrón sutil o un degradado muy oscuro */
+            background: radial-gradient(circle at center, rgba(0, 255, 255, 0.03) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        /* Contenedor del Login (La 'Card') */
+        .login-card {
+            background-color: var(--color-card-dark);
+            padding: 40px;
+            border-radius: 4px; /* Bordes afilados o mínimamente redondeados */
+            border: 1px solid var(--color-border-subtle); /* Borde sutil */
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.1); /* Ligero 'Glow' del acento */
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+            transition: transform 0.3s ease-out;
+        }
+
+        /* Encabezado Vanguardista */
+        .login-header {
+            margin-bottom: 35px;
+            border-bottom: 1px solid var(--color-border-subtle);
+            padding-bottom: 15px;
+        }
+
+        .login-header h2 {
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .highlight {
+            color: var(--color-accent);
+        }
+
+        .login-header p {
+            color: #aaaaaa;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            font-weight: 300;
+        }
+
+        /* Inputs y Grupos */
+        .input-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 400;
+            font-size: 0.9em;
+            color: var(--color-text-light);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 14px 10px;
+            background-color: transparent; /* Fondo transparente */
+            border: 1px solid var(--color-border-subtle);
+            border-radius: 2px;
+            color: var(--color-text-light);
+            font-size: 1em;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .input-field::placeholder {
+            color: #555;
+        }
+
+        /* Efecto de Enfoque (Focus Glow) */
+        .input-field:focus {
+            border-color: var(--color-accent);
+            outline: none;
+            box-shadow: 0 0 8px rgba(0, 255, 255, 0.4); 
+        }
+
+        /* Botón de Acción (Resaltado) */
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 2px;
+            background-color: var(--color-accent);
+            color: var(--color-bg-dark); /* Texto oscuro sobre acento */
+            font-weight: 700;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.2s, opacity 0.2s, box-shadow 0.3s;
+            text-transform: uppercase;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: #00e5e5;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+        }
+
+        .btn-primary:disabled {
+            background-color: var(--color-border-subtle);
+            color: #888;
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+
+        /* Animación del Loader */
+        .spinner {
+            margin-left: 8px;
+            animation: spin 1s linear infinite;
+            color: var(--color-bg-dark); /* Color del texto del botón */
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Mensajes de Estado */
+        .login-message {
+            margin-top: 25px;
+            padding: 10px;
+            border-radius: 2px;
+            font-size: 0.9em;
+            font-weight: 600;
+            opacity: 0; 
+            transition: opacity 0.3s, background-color 0.3s;
+        }
+
+        .login-message.visible {
+            opacity: 1;
+        }
+
+        .login-message.error {
+            background-color: rgba(255, 107, 107, 0.1); 
+            color: var(--color-error);
+            border: 1px solid var(--color-error);
+        }
+
+        .login-message.success {
+            background-color: rgba(61, 220, 132, 0.1);
+            color: var(--color-success);
+            border: 1px solid var(--color-success);
+        }
+
+        /* Pie de página */
+        .login-footer {
+            margin-top: 30px;
+            color: #555;
+            font-size: 0.75em;
+            font-weight: 300;
+        }
+    </style>
 </head>
 <body>
-    <div class="login-container">
+    <div class="background-texture"></div> 
+    
+    <div class="login-card">
         <header class="login-header">
-            <h2>Acceso de Administrador</h2>
-            <p>Inversiones Martinez</p>
+            <h2><span class="highlight">INV</span>ENTARIO</h2>
+            <p>Acceso de Control | MARTINEZ</p>
         </header>
         
         <form id="loginForm" class="login-form">
+            
             <div class="input-group">
                 <label for="username">Usuario</label>
-                <input type="text" id="username" name="username" placeholder="Ingrese su usuario" required>
+                <input type="text" id="username" name="username" placeholder="admin" required class="input-field">
             </div>
             
             <div class="input-group">
                 <label for="password">Contraseña</label>
-                <input type="password" id="password" name="password" placeholder="Ingrese su contraseña" required>
+                <input type="password" id="password" name="password" placeholder="***" required class="input-field">
             </div>
             
-            <button type="submit" id="loginButton" class="btn btn-primary">Iniciar Sesión</button>
+            <button type="submit" id="loginButton" class="btn btn-primary">
+                Ingresar al Sistema
+            </button>
             
             <p id="message" class="login-message" role="alert"></p>
         </form>
         
         <footer class="login-footer">
-            <p>&copy; 2025</p>
+            <p>2025 | Sistema interno</p>
         </footer>
     </div>
 
-    <script src="login.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const loginButton = document.getElementById('loginButton');
+            const messageElement = document.getElementById('message');
+            
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            // URL DEL ENDPOINT DE AUTENTICACIÓN EN TU PYTHONANYWHERE
+            const API_LOGIN_URL = 'https://invmartinez.pythonanywhere.com/auth/login'; 
+
+            // Deshabilitar botón y mostrar loader
+            loginButton.disabled = true;
+            loginButton.innerHTML = 'VALIDANDO <i class="fas fa-sync-alt fa-spin spinner"></i>';
+            messageElement.textContent = '';
+            messageElement.className = 'login-message'; // Limpiar estado anterior
+
+            // Función para restablecer el estado del botón y mostrar mensaje
+            const resetButton = (messageText, isSuccess = false) => {
+                loginButton.innerHTML = 'Ingresar al Sistema';
+                loginButton.disabled = false;
+                
+                messageElement.textContent = messageText;
+                messageElement.classList.add('visible');
+
+                if (isSuccess) {
+                    messageElement.classList.add('success');
+                } else {
+                    messageElement.classList.add('error');
+                }
+            };
+
+            // LLAMADA A LA API
+            fetch(API_LOGIN_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username: username, password: password })
+            })
+            .then(response => {
+                // Si el estado es 200-299, fue exitoso
+                if (response.ok) { 
+                    return response.json(); 
+                } 
+                
+                // Si no es exitoso (401, 403, 404, 500), intentar leer el error del body
+                return response.json().then(data => { 
+                    // Usar el mensaje de error del backend o uno genérico
+                    throw new Error(data.error || `Error ${response.status}: Credenciales inválidas o falla del servidor.`); 
+                });
+            })
+            .then(data => {
+                // Éxito
+                resetButton('Acceso Autorizado. Redirigiendo...', true);
+                
+                // Redirigir a la página principal de inventario (asume que existe un index.html)
+                setTimeout(() => {
+                    window.location.href = 'index.html'; 
+                }, 1000);
+
+            })
+            .catch(error => {
+                // Falla en la red o error devuelto por el servidor
+                console.error('Login Error:', error);
+                resetButton(`Acceso Denegado: ${error.message}`, false);
+            });
+        });
+    </script>
 </body>
 </html>
