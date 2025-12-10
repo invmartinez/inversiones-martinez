@@ -3,207 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inversiones Martínez - Acceso</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        /* ---------------------------------------------------- */
-        /* ESTILOS CSS */
-        /* ---------------------------------------------------- */
-
-        :root {
-            --color-primary: #007bff; /* Azul corporativo */
-            --color-light-blue: #f0f7ff;
-            --color-medium-blue: #cce0f5; 
-            --color-card-bg: #ffffff; 
-            --color-text-dark: #333333; 
-            --color-text-secondary: #666666; 
-            --color-error: #dc3545; 
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            /* Fondo con Degradado Monocromático Suave */
-            background: linear-gradient(135deg, var(--color-light-blue) 0%, var(--color-medium-blue) 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        /* Contenedor de la Tarjeta de Login */
-        .login-card {
-            background-color: var(--color-card-bg);
-            padding: 40px;
-            border-radius: 16px; 
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); 
-            width: 100%;
-            max-width: 420px;
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-
-        /* Nombre de la Compañía */
-        .company-name {
-            font-size: 2.2em;
-            font-weight: 700;
-            color: var(--color-primary);
-            margin-bottom: 5px;
-            letter-spacing: 1px;
-        }
-
-        /* Subtítulo */
-        .subtitle {
-            color: var(--color-text-secondary);
-            font-size: 1em;
-            font-weight: 300;
-            margin-bottom: 30px;
-        }
-
-        /* Estilos del Formulario */
-        .input-group {
-            position: relative;
-            margin-bottom: 25px;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 12px 15px 12px 45px; 
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1em;
-            color: var(--color-text-dark);
-            transition: border-color 0.3s;
-        }
-
-        .input-group input:focus {
-            border-color: var(--color-primary);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
-        }
-
-        /* Iconos de entrada */
-        .input-icon {
-            position: absolute;
-            top: 50%;
-            left: 15px;
-            transform: translateY(-50%);
-            color: var(--color-text-secondary);
-            font-size: 1.1em;
-        }
-
-        /* Botón Principal */
-        .login-button {
-            width: 100%;
-            padding: 14px;
-            background-color: var(--color-primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.1s;
-        }
-
-        .login-button:hover {
-            background-color: #0056b3;
-        }
-
-        .login-button:active {
-            transform: scale(0.99);
-        }
-
-        /* Mensaje de Error */
-        .error-text {
-            color: var(--color-error);
-            margin-top: 20px;
-            font-size: 0.9em;
-            font-weight: 500;
-            text-align: center;
-        }
-        
-        /* Estilo del Nuevo Enlace/Botón de Administrador */
-        .admin-link {
-            display: block;
-            margin-top: 20px;
-            color: var(--color-text-secondary); /* Color más sutil que el primario */
-            font-size: 0.9em;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        .admin-link:hover {
-            color: var(--color-primary);
-            text-decoration: underline;
-        }
-
-    </style>
+    <title>Inversiones Martinez - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="login.css">
 </head>
 <body>
-    <div class="login-card">
+    <div class="login-container">
+        <header class="login-header">
+            <h2>Acceso de Administrador</h2>
+            <p>Inversiones Martinez</p>
+        </header>
         
-        <p style="font-size: 0.8em; color: var(--color-primary); font-weight: 600;">I. M.</p>
-        <h1 class="company-name">INVERSIONES MARTÍNEZ</h1>
-        <p class="subtitle">Acceso al Sistema de Gestión</p>
-
-        <form id="login-form">
+        <form id="loginForm" class="login-form">
             <div class="input-group">
-                <span class="input-icon">📧</span>
-                <input type="email" id="email" name="email" placeholder="Correo Electrónico" required>
-            </div>
-            <div class="input-group">
-                <span class="input-icon">🔒</span>
-                <input type="password" id="password" name="password" placeholder="Contraseña" required>
+                <label for="username">Usuario</label>
+                <input type="text" id="username" name="username" placeholder="Ingrese su usuario" required>
             </div>
             
-            <button type="submit" class="login-button">Iniciar Sesión</button>
-            <p id="error-message" class="error-text"></p>
+            <div class="input-group">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" name="password" placeholder="Ingrese su contraseña" required>
+            </div>
+            
+            <button type="submit" id="loginButton" class="btn btn-primary">Iniciar Sesión</button>
+            
+            <p id="message" class="login-message" role="alert"></p>
         </form>
-
-        <a href="admin-login.html" class="admin-link">Acceso Administrador</a>
-
+        
+        <footer class="login-footer">
+            <p>&copy; 2025</p>
+        </footer>
     </div>
 
-    <script>
-        document.getElementById('login-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const errorMessage = document.getElementById('error-message');
-            
-            // Reemplaza esta URL con la URL REAL de tu API en PythonAnywhere
-            const API_URL = 'https://YOUR_PYTHONANYWHERE_DOMAIN.pythonanywhere.com/api/login'; 
-            
-            errorMessage.textContent = 'Verificando credenciales...';
-
-            try {
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    localStorage.setItem('auth_token', data.token);
-                    window.location.href = '/dashboard.html'; 
-                } else {
-                    errorMessage.textContent = data.message || 'Credenciales incorrectas. Intente de nuevo.';
-                }
-            } catch (error) {
-                errorMessage.textContent = 'Error de conexión. Asegúrate que el API de Flask esté activo.';
-                console.error('Error de conexión:', error);
-            }
-        });
-    </script>
+    <script src="login.js"></script>
 </body>
 </html>
